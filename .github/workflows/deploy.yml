@@ -20,9 +20,15 @@ jobs:
         username: ${{ secrets.SERVER_USER }}
         key: ${{ secrets.SERVER_SSH_KEY }}
         script: |
-          cd /project/prod/gseekbot
-          git pull origin main
+          if [ ! -d /project/prod/gseekbot/.git ]; then
+            mkdir -p /project/prod/gseekbot
+            git clone https://github.com/klaymov/GSeekBot.git /project/prod/gseekbot
+          else
+            cd /project/prod/gseekbot
+            git pull origin main
+          fi
 
+          cd /project/prod/gseekbot
           echo "${{ secrets.ENV_CONTENT }}" > .env
 
           docker compose down

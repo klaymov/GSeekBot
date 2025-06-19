@@ -24,7 +24,7 @@ async def inline_result(
         return
     
     results = []
-    search_results = await duckduckgo.ddg_definitions(f'wikipedia {query.from_user.language_code} {query.query}')
+    search_results = await duckduckgo.get(query.query)
     
     if not search_results:
         return

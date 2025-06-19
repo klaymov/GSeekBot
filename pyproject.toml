@@ -7,6 +7,7 @@ requires-python = ">=3.11"
 dependencies = [
     "aiogram>=3.20.0.post0",
     "beanie>=1.30.0",
+    "beautifulsoup4>=4.13.4",
     "cachetools>=6.1.0",
     "duckduckgo-search>=8.0.4",
     "fluent-runtime>=0.4.0",

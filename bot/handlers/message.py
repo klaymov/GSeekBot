@@ -32,8 +32,8 @@ async def message_handler(
     blog = '<a href="https://t.me/qublog">Blog</a>'
     github = '<a href="https://github.com/klaymov/GSeekBot">GitHub</a>'
     
-    message_text = "Use @GSeekBot in any chat to search for information on Google."
-    message_text += "\n\nFor example: <code>@GSeekBot Who created Telegram?</code>"
+    message_text = "Use @GSeekBot in any chat to search for information on Internet."
+    message_text += "\n\nFor example: <code>@GSeekBot What is a metaphor?</code>"
     message_text += f"\n\n{blog}, {github}"
     
     await message.answer(

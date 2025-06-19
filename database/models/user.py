@@ -17,7 +17,7 @@ class UserModel(Document):
     created_at: Optional[datetime] = None
     last_seen: Optional[datetime] = None
     
-    class Config:
+    class Settings:
         name = "users"
         use_state_management = True
     

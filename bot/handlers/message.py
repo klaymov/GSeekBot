@@ -33,7 +33,7 @@ async def message_handler(
     github = '<a href="https://github.com/klaymov/GSeekBot">GitHub</a>'
     
     message_text = "Use @GSeekBot in any chat to search for information on Google."
-    message_text += "\n\nFor example: <code>@GSeekBot What is the phrase</code>"
+    message_text += "\n\nFor example: <code>@GSeekBot Who created Telegram?</code>"
     message_text += f"\n\n{blog}, {github}"
     
     await message.answer(

@@ -3,6 +3,7 @@ from __future__ import annotations
 import re
 import html
 from uuid import uuid4
+from urllib.parse import unquote, parse_qs
 
 from aiogram import Router
 from aiogram.types import (
@@ -33,6 +34,11 @@ async def inline_result(
         body = item.get('body', '').strip()
         href = item.get('href', '').strip()
         title = item.get('title', '').strip()
+        
+        if 'duckduckgo.com/l/?' in href:
+            query_params = parse_qs(href.split('?', 1)[1])
+            if 'uddg' in query_params:
+                href = unquote(query_params['uddg'][0])
         
         if not body and not href and not title:
             continue

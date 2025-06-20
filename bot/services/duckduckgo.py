@@ -1,5 +1,6 @@
 import aiohttp
 import asyncio
+import re
 from bs4 import BeautifulSoup
 from loguru import logger
 from duckduckgo_search import DDGS
@@ -64,7 +65,12 @@ async def ddg_html_search(query: str, max_results: int = 10) -> list[dict]:
                 result.select_one(".result__body .snippet") or
                 result.select_one(".result__snippet")       
             )
-            snippet = snippet_tag.get_text(strip=True) if snippet_tag else ""
+            if snippet_tag:
+                snippet = " ".join(snippet_tag.stripped_strings)
+                snippet = re.sub(r"\u00A0", " ", snippet)
+                snippet = re.sub(r"\s+", " ", snippet).strip()
+            else:
+                snippet = ""
 
             results.append({
                 "title": title,

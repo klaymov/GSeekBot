@@ -10,6 +10,7 @@ from app.gseekbot.config import get_settings
 from app.gseekbot.infrastructure.di.main import setup_container
 from app.gseekbot.telegram.handlers.inline import router as inline_router
 from app.gseekbot.telegram.middlewares.debounce import DebounceInlineMiddleware
+from app.gseekbot.telegram.middlewares.user import UserMiddleware
 
 
 async def main() -> None:
@@ -26,6 +27,12 @@ async def main() -> None:
         default_locale="uk",
     )
     i18n_middleware.setup(dp)
+
+    # Register middlewares
+    user_middleware = UserMiddleware()
+    dp.message.middleware(user_middleware)
+    dp.callback_query.middleware(user_middleware)
+    dp.inline_query.middleware(user_middleware)
 
     dp.inline_query.middleware(DebounceInlineMiddleware(delay=1.0))
     dp.include_router(inline_router)

@@ -20,6 +20,8 @@ class UserModel(Base):
     registration_datetime: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), default=utc_now
     )
+    locale: Mapped[str] = mapped_column(String(10), default="en")
+    is_premium: Mapped[bool] = mapped_column(Boolean, default=False)
     pm_active: Mapped[bool] = mapped_column(Boolean, default=True)
     inline_usage_count: Mapped[int] = mapped_column(Integer, default=0)
     last_active: Mapped[datetime] = mapped_column(

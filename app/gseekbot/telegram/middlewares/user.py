@@ -1,13 +1,16 @@
+from collections.abc import Awaitable, Callable
 from pathlib import Path
-from typing import Any, Awaitable, Callable
+from typing import TYPE_CHECKING, Any
 
 from aiogram import BaseMiddleware
 from aiogram.types import TelegramObject, User
-from aiogram_i18n import I18nContext
-from dishka import AsyncContainer
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.gseekbot.infrastructure.db.models.user import UserModel, utc_now
+
+if TYPE_CHECKING:
+    from aiogram_i18n import I18nContext
+    from dishka import AsyncContainer
 
 
 def resolve_locale(language_code: str | None) -> str:

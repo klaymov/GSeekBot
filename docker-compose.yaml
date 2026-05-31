@@ -1,0 +1,18 @@
+services:
+  bot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: [ "python", "-m", "app.main" ]
+    env_file: .env
+    tty: True
+    volumes:
+      - ./logs:/app/logs
+    networks:
+      - my_docker_network
+    stop_signal: SIGINT
+    restart: unless-stopped
+
+networks:
+  my_docker_network:
+    external: true

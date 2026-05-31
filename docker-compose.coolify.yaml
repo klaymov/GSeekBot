@@ -1,0 +1,22 @@
+services:
+  bot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: [ "python", "-m", "app.main" ]
+    env_file: .env
+    volumes:
+      - logs:/app/logs
+    networks:
+      - default
+      - coolify_net
+    stop_signal: SIGINT
+    restart: unless-stopped
+
+volumes:
+  logs:
+
+networks:
+  coolify_net:
+    external: true
+    name: coolify

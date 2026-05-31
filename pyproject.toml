@@ -1,149 +1,109 @@
 [project]
-name = "gseek-bot"
+name = "gseekbot"
 version = "0.1.0"
+description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
-dependencies = [
-    "aiogram>=3.20.0.post0",
-    "beanie>=1.30.0",
-    "beautifulsoup4>=4.14.3",
-    "coloredlogs>=15.0.1",
-    "duckduckgo-search>=8.1.1",
-    "logging>=0.4.9.6",
-    "motor>=3.7.1",
-    "pydantic-settings>=2.9.1",
-]
+dependencies = []
 
 [project.optional-dependencies]
 dev = [
+    "FTL-Extract==0.9.0a10",
     "pre-commit==4.3.0",
 ]
 lint = [
-    "isort==7.0.0",
     "ruff==0.14.0",
     "mypy==1.18.2",
     "types-pytz==2025.2.0.20250809",
 ]
 
-[tool.uv]
-package = true
-
-[tool.setuptools.packages.find]
-include = ["app*"]
-
-[tool.isort]
-py_version = 313
-src_paths = ["app"]
-line_length = 100
-multi_line_output = 3
-force_grid_wrap = 0
-include_trailing_comma = true
-split_on_trailing_comma = false
-single_line_exclusions = ["."]
-sections = ["FUTURE", "STDLIB", "THIRDPARTY", "FIRSTPARTY", "LOCALFOLDER"]
-skip_gitignore = true
-extend_skip = ["__pycache__"]
-known_first_party = [
-    "errors",
-    "filters",
-    "handlers",
-    "middlewares",
-    "settings",
-    "storages",
-    "stub",
-    "utils"
-]
-
 [tool.ruff]
+line-length = 99
 src = ["app"]
-line-length = 100
 exclude = [
     ".git",
-    ".mypy_cache",
-    ".ruff_cache",
-    "__pypackages__",
-    "__pycache__",
+    "build",
+    "dist",
     "venv",
     ".venv",
+    "*.egg-info",
+    "app/i18n/locales",
 ]
 
 [tool.ruff.lint]
-select = ["ALL"]
+select = [
+    "W",     # pycodestyle warnings
+    "N",     # pep8-naming
+    "PTH",   # flake8-use-pathlib
+    "G",     # flake8-logging-format
+    "ANN",   # flake8-annotations
+    "TCH",   # flake8-type-checking
+    "PYI",   # flake8-pyi
+    "FA",    # flake8-future-annotations
+    "A",    # flake8-builtins — conflicts with built-in names
+    "B",    # flake8-bugbear — common bugs
+    "C4",   # flake8-comprehensions — unnecessary list/dict comprehensions
+    "DTZ",  # flake8-datetimez — datetime without timezone
+    "E",    # pycodestyle errors
+    "F",    # pyflakes — unused imports, variables
+    "I",    # isort — import order
+    "PERF", # perflint — performance issues
+    "PL",   # pylint
+    "Q",    # flake8-quotes
+    "RET",  # flake8-return — unnecessary return
+    "SIM",  # flake8-simplify — code simplification
+    "T10",  # flake8-debugger — left-over breakpoint()
+    "T20",  # flake8-print — left-over print()
+    "UP",   # pyupgrade — older Python syntax
+]
 ignore = [
-    "A003",
-    "ANN002", "ANN003", "ANN401",
-    "C901",
-    "COM812",
-    "CPY001",
-    "D100", "D101", "D102", "D103", "D104", "D105", "D106", "D107", "D203", "D205", "D212",
-    "DOC201", "DOC501",
-    "ERA001",
-    "FA100", "FA102",
-    "FBT001", "FBT002",
-    "FIX002",
-    "I001",
-    "PLC2801",
-    "PLR0911", "PLR0912", "PLR0913", "PLR0914", "PLR0915", "PLR0917", "PLR1702", "PLR5501", "PLR6301",
-    "PLW0120",
-    "RUF001", "RUF029",
-    "TC006",
-    "TD002", "TD003",
-    "EXE002",
-    "TRY300",
-    # "RET505",
+    "A002",    # builtin-argument-shadowing
+    "A005",    # stdlib-module-shadowing
+    "B008",    # function-call-in-default-argument
+    "PLC0415", # import-outside-top-level
+    "PLR0911", # too-many-return-statements
+    "PLR0912", # too-many-branches
+    "PLR0913", # too-many-arguments
+    "PLR0915", # too-many-statements
+    "PLR6301", # no-self-use
+    "ANN401",
+    "ANN101",
+    "ANN102",
 ]
 
-[tool.ruff.lint.extend-per-file-ignores]
-"stub.pyi" = ["A002", "E501"]
+[tool.ruff.lint.isort]
+known-first-party = ["app"]
 
 [tool.ruff.format]
 quote-style = "double"
 indent-style = "space"
-skip-magic-trailing-comma = false
 line-ending = "auto"
 
 [tool.mypy]
+plugins = ["pydantic.mypy"]
 python_version = "3.13"
-mypy_path = "app"
-packages = ["app"]
-plugins = [
-    "pydantic.mypy",
-    "sqlalchemy.ext.mypy.plugin",
-]
-allow_redefinition = true
-check_untyped_defs = true
-disallow_any_generics = true
-disallow_incomplete_defs = true
-disallow_untyped_calls = true
-disallow_untyped_defs = true
-extra_checks = true
-follow_imports = "normal"
-follow_imports_for_stubs = true
-ignore_missing_imports = false
-no_implicit_optional = true
-no_implicit_reexport = true
-pretty = true
-show_absolute_path = true
 show_error_codes = true
 show_error_context = true
-warn_redundant_casts = true
+pretty = true
+ignore_missing_imports = false
 warn_unused_configs = true
+disallow_any_generics = true
+disallow_untyped_calls = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+warn_redundant_casts = true
 warn_unused_ignores = true
+warn_return_any = true
+namespace_packages = true
+show_absolute_path = true
+disallow_any_explicit = true
+disallow_subclassing_any = true
+warn_no_return = true
+extra_checks = true
 
-disable_error_code = [
-    "assignment",
-    "attr-defined",
-    "no-redef",
-    "union-attr",
-]
-
-exclude = [
-    "\\.?venv",
-    "\\.idea",
-    "\\.tests?",
-]
-
-[tool.pydantic-mypy]
-init_forbid_extra = true
-init_typed = true
-warn_required_dynamic_aliases = true
+[tool.pyright]
+venvPath = "."
+venv = ".venv"

@@ -1,35 +1,27 @@
-FROM python:3.13.6-slim
+FROM python:3.13-slim
 
-ENV PYTHONUNBUFFERED=1 \
-    PIP_DISABLE_PIP_VERSION_CHECK=1 \
-    UV_NO_CACHE=1
+ARG APP_USER=appuser
 
-ARG USER_ID=${USER_ID:-999}
-ARG GROUP_ID=${GROUP_ID:-999}
-ARG USER_NAME=${USER_NAME:-api}
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
+
+RUN apt-get update && apt-get install -y --no-install-recommends ffmpeg && rm -rf /var/lib/apt/lists/*
+
+RUN useradd -m -u 1000 ${APP_USER} && \
+    mkdir -p /app && \
+    chown -R ${APP_USER}:${APP_USER} /app
 
 WORKDIR /app
 
-RUN if [ "$USER_NAME" != "root" ]; then \
-    echo "Creating non-root user: $USER_NAME" && \
-    groupadd --system --gid=${GROUP_ID} ${USER_NAME} && \
-    useradd --system --shell /bin/false --no-log-init --gid=${GROUP_ID} --uid=${USER_ID} ${USER_NAME} && \
-    chown ${USER_NAME}:${USER_NAME} /app ; \
-    else \
-    echo "Running as root, skipping user creation"; \
-    fi
+RUN mkdir -p /app/logs && chmod 777 /app/logs
+RUN mkdir -p /app/secrets && chmod 777 /app/secrets
 
-USER ${USER_NAME}
+COPY --chown=${APP_USER}:${APP_USER} pyproject.toml ./
 
-COPY --chown=${USER_NAME}:${USER_NAME} pyproject.toml ./
-COPY --chown=${USER_NAME}:${USER_NAME} uv.lock* ./
+USER ${APP_USER}
 
-RUN --mount=type=cache,target=/root/.cache/uv \
-    --mount=from=ghcr.io/astral-sh/uv,source=/uv,target=/bin/uv \
-    uv sync --no-dev --frozen --no-install-project
+RUN uv sync --no-dev
 
-COPY --chown=${USER_NAME}:${USER_NAME} . /app/
+COPY --chown=${APP_USER}:${APP_USER} app/ ./app/
 
-RUN --mount=type=cache,target=/root/.cache/uv \
-    --mount=from=ghcr.io/astral-sh/uv,source=/uv,target=/bin/uv \
-    uv sync --no-dev --frozen
+ENV PATH="/app/.venv/bin:$PATH"
+ENV PYTHONPATH="/app/app:$PYTHONPATH"

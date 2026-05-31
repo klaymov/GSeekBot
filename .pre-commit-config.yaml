@@ -1,0 +1,38 @@
+fail_fast: false
+exclude: '\.ftl$'
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: "trailing-whitespace"
+      - id: "check-case-conflict"
+      - id: "check-merge-conflict"
+      - id: "debug-statements"
+      - id: "end-of-file-fixer"
+      - id: "mixed-line-ending"
+        args: [ "--fix", "lf" ]
+        types:
+          - python
+          - yaml
+          - toml
+          - text
+      - id: "detect-private-key"
+      - id: "check-yaml"
+      - id: "check-toml"
+      - id: "check-json"
+
+  - repo: https://github.com/charliermarsh/ruff-pre-commit
+    rev: v0.15.10
+    hooks:
+      - id: ruff
+        args: [ "--fix" ]
+        files: "app"
+
+      - id: ruff-format
+        files: "app"
+
+  - repo: https://github.com/RobertCraigie/pyright-python
+    rev: v1.1.409
+    hooks:
+      - id: pyright
+        files: "app"

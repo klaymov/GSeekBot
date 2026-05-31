@@ -25,11 +25,11 @@ class OpenRouterClient:
                         "the user used. Your response must not exceed 100 characters. "
                         "If you cannot provide a direct answer, respond with exactly 'False' "
                         "and nothing else."
-                    )
+                    ),
                 },
-                {"role": "user", "content": query}
+                {"role": "user", "content": query},
             ],
-            "max_tokens": 50
+            "max_tokens": 50,
         }
 
         async with self.session.post(url, headers=headers, json=payload) as response:

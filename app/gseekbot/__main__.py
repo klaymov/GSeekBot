@@ -12,12 +12,12 @@ from app.gseekbot.telegram.handlers.inline import router as inline_router
 from app.gseekbot.telegram.middlewares.debounce import DebounceInlineMiddleware
 
 
-async def main():
+async def main() -> None:
     logging.basicConfig(level=logging.INFO)
-    
+
     container = setup_container()
     settings = get_settings()
-    
+
     bot = Bot(token=settings.bot_token)
     dp = Dispatcher()
 
@@ -26,12 +26,12 @@ async def main():
         default_locale="uk",
     )
     i18n_middleware.setup(dp)
-    
+
     dp.inline_query.middleware(DebounceInlineMiddleware(delay=1.0))
     dp.include_router(inline_router)
 
     setup_dishka(container=container, router=dp)
-    
+
     try:
         await dp.start_polling(bot)
     finally:

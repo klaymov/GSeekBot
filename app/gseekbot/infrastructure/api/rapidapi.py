@@ -14,12 +14,9 @@ class RapidAPIClient:
         headers = {
             "x-rapidapi-key": self.api_key,
             "x-rapidapi-host": self.host,
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
         }
-        params = {
-            "q": query,
-            "limit": str(limit)
-        }
+        params = {"q": query, "limit": str(limit)}
 
         async with self.session.get(self.base_url, headers=headers, params=params) as response:
             response.raise_for_status()

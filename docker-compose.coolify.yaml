@@ -3,7 +3,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    command: [ "python", "-m", "app.main" ]
+    command: [ "python", "-m", "app.gseekbot" ]
     env_file: .env
     volumes:
       - logs:/app/logs

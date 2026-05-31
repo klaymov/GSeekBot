@@ -23,3 +23,12 @@ extract-locales:
 
 sync:
 	uv sync --extra dev --extra lint
+
+migrate-create:
+	uv run alembic revision --autogenerate -m "$(m)"
+
+migrate-up:
+	uv run alembic upgrade head
+
+migrate-down:
+	uv run alembic downgrade -1
